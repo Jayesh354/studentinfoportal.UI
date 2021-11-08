@@ -17,6 +17,12 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 
 import { StudentComponent } from './student/student.component';
+import { ViewStudentComponent } from './student/view-student/view-student.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 
 
@@ -25,7 +31,8 @@ import { StudentComponent } from './student/student.component';
   declarations: [
     AppComponent,
     TopNavComponent,
-    StudentComponent
+    StudentComponent,
+    ViewStudentComponent
   ],
   imports: [
     FormsModule,
@@ -38,9 +45,18 @@ import { StudentComponent } from './student/student.component';
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatButtonToggleModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+
   ],
-  providers: [],
+  providers: [
+    MatDatepickerModule
+  ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })

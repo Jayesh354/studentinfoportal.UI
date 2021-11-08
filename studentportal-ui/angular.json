@@ -34,7 +34,9 @@
               "./node_modules/flexboxgrid/dist/flexboxgrid.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+
+            ]
           },
           "configurations": {
             "production": {
