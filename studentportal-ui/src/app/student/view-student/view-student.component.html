@@ -1,6 +1,6 @@
 <div class="page-header">
   <div class="container">
-    <h1> Student Detail </h1>
+    <h1> {{header}} </h1>
 </div>
 </div>
 <div class="container">
@@ -54,7 +54,7 @@
           <div class="col-xs-6">
             <mat-form-field appearance="outline">
               <mat-label>Mobile</mat-label>
-              <input type="number" name="mobile" [(ngModel)]="student.mobile" matInput>
+              <input type="text" name="mobile" [(ngModel)]="student.mobile" matInput>
             </mat-form-field>
           </div>
         </div>
@@ -91,8 +91,11 @@
 
         </div>
         <div class="row">
-          <div class="col-xs-12">
-            <button mat-raised-button color="primary"(click)="onUpdate()" >Save</button>
+          <div class="col-xs-12" *ngIf="!isNewStudent">
+            <button mat-raised-button color="primary"(click)="onUpdate()" >Update</button>
+          </div>
+          <div class="col-xs-12" *ngIf="isNewStudent">
+            <button mat-raised-button color="primary"(click)="onAddNew()" >Add</button>
           </div>
         </div>
       </form>

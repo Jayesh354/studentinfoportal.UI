@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Gender } from 'src/app/models/ui-model/gender.model';
 import { Student } from 'src/app/models/ui-model/student.model';
 import { GendersService } from 'src/app/services/genders.service';
@@ -19,7 +19,7 @@ export class ViewStudentComponent implements OnInit {
     firstName:'',
     lastName:'',
     email:'',
-    mobile:0,
+    mobile:'',
     profileImageUrl:'',
     dateOfBirth:'',
     genderId:'',
@@ -36,17 +36,52 @@ export class ViewStudentComponent implements OnInit {
 
   }
   genderList:Gender[]=[];
+  isNewStudent:boolean=false;
+  header:string='';
 
   constructor(private readonly studentService:StudentService,
     private readonly route:ActivatedRoute,
     private readonly genderService:GendersService,
-    private snackBar:MatSnackBar) { }
+    private snackBar:MatSnackBar,
+    private router:Router) { }
 
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(
       (params)=>{
         this.studentId= params.get('id');
+
+        if(this.studentId){
+
+          if(this.studentId.toLocaleLowerCase()==='Add'.toLocaleLowerCase()){
+
+            // Add New Student
+            this.isNewStudent=true;
+            this.header='Add New Student';
+
+          }
+          else{
+            this.isNewStudent=false;
+            this.header='Edit Student';
+
+            // Edit Student
+            if(this.studentId){
+              this.studentService.getStudent(this.studentId).subscribe(
+                (successResponse)=>{
+                    this.student= successResponse;
+                },
+                (error)=>{
+                  console.error(error);
+
+
+                }
+              )
+            }
+
+          }
+
+        }
+
       }
     )
     this.genderService.getGenders().subscribe(
@@ -58,18 +93,7 @@ export class ViewStudentComponent implements OnInit {
 
       }
     );
-    if(this.studentId){
-      this.studentService.getStudent(this.studentId).subscribe(
-        (successResponse)=>{
-            this.student= successResponse;
-        },
-        (error)=>{
-          console.error(error);
 
-
-        }
-      )
-    }
 
   }
 
@@ -79,11 +103,12 @@ export class ViewStudentComponent implements OnInit {
 
         // Notification Success
 
-        console.log(successResponse);
-        this.snackBar.open('Student updated successfully',undefined,
-        {
-          duration:2000
-        });
+
+        this.snackBar.open('Student updated successfully',undefined,{duration:2000});
+        setTimeout(() => {
+          this.router.navigateByUrl(`/student`);
+        }, 2000);
+
 
       },
       (errorResponse)=>{
@@ -99,6 +124,25 @@ export class ViewStudentComponent implements OnInit {
 
       }
       )
+  }
+  onAddNew(){
+
+    this.studentService.addNewStudent(this.student).subscribe(
+      (successResponse)=>{
+        console.log(successResponse);
+        this.snackBar.open('New Student added succsessfully..',undefined,{duration:2000});
+        setTimeout(() => {
+          this.router.navigateByUrl(`student/${successResponse.id}`);
+        }, 2000);
+
+
+      },
+      (errorResponse)=>{
+        console.log(errorResponse);
+
+      }
+      )
+
   }
 
 }

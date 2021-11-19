@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AddNewStudentRequest } from '../models/api-models/add-student-model';
 import { Student } from '../models/api-models/student.model';
 import { UpdateStudentRequest } from '../models/api-models/update-student.model';
 
@@ -39,6 +40,26 @@ export class StudentService {
     }
 
     return this.httpClient.put<Student>(this.baseApiUrl+'/students/'+studentId,updateedStudentRequest);
+
+  }
+
+  deleteStudent(studentId:string){
+    return this.httpClient.delete<Student>(this.baseApiUrl+'/students/'+studentId);
+  }
+
+  addNewStudent(studentRequest:Student):Observable<Student>{
+    const addStudentRequest:AddNewStudentRequest={
+      firstName:studentRequest.firstName,
+      lastName:studentRequest.lastName,
+      email:studentRequest.email,
+      mobile:studentRequest.mobile,
+      genderId:studentRequest.genderId,
+      dateOfBirth:studentRequest.dateOfBirth,
+      postalAddress:studentRequest.address.postalAddress,
+      physicalAddress:studentRequest.address.physicalAddress
+    }
+
+    return this.httpClient.post<Student>(this.baseApiUrl+'/students/add',addStudentRequest);
 
   }
 }
